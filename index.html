@@ -283,6 +283,16 @@ th {
     white-space: nowrap;
 }
 
+/* Linha de aluno inativo */
+.aluno-inativo {
+    background-color: #f5e6e3;
+    opacity: 0.9;
+}
+
+.aluno-inativo td {
+    color: #555;
+}
+
 /* Scrollbar personalizada */
 .lista-alunos-wrapper::-webkit-scrollbar {
     width: 8px;
@@ -326,6 +336,32 @@ th {
     color: white;
 }
 
+/* Filtro de status */
+.filtro-status {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 10px 0 5px 0;
+    padding: 5px 10px;
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+.filtro-status label {
+    font-weight: normal;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.filtro-status input[type="radio"] {
+    width: 12px;
+    height: 12px;
+    margin: 0;
+}
+
 .btn-acao {
     background: #1a3e6f;
     color: white;
@@ -353,6 +389,14 @@ th {
     background: transparent;
     border: 1px solid #1a3e6f;
     color: #1a3e6f;
+}
+
+.btn-success {
+    background: #27ae60;
+}
+
+.btn-success:hover {
+    background: #229954;
 }
 
 /* ================= LISTA DE VIAGEM ================= */
@@ -392,6 +436,11 @@ th {
     border-bottom: 1px dotted #ccc;
     display: flex;
     justify-content: space-between;
+}
+
+/* Container que permite quebra de página na impressão */
+.print-container {
+    display: block;
 }
 
 /* ================= BARRA DE BOTÕES ================= */
@@ -438,6 +487,14 @@ th {
     background: #8e44ad;
 }
 
+.btn-raiz {
+    background: #f39c12;
+}
+
+.btn-csv {
+    background: #2c3e50;
+}
+
 /* ================= FORMULÁRIO DE CADASTRO ================= */
 .cadastro-box {
     background: #f5f5f5;
@@ -464,7 +521,7 @@ th {
 /* ================= CONFIGURAÇÃO DE IMPRESSÃO ================= */
 @page {
     size: A4;
-    margin: 0;
+    margin: 15mm 15mm 15mm 15mm;
 }
 
 @media print {
@@ -474,79 +531,88 @@ th {
         margin: 0;
     }
 
+    .action-bar,
+    .abas-container,
+    .equipe-tabs,
+    .viagem-selecao .equipe-tabs,
+    #btnSelecionarTodos,
+    #btnDesselecionarTodos,
+    .btn-acao:not(.print-hide),
+    .cadastro-box,
+    #equipeTabs,
+    .double-row .btn-acao,
+    .viagem-selecao .double-row,
+    .normas-container,
+    .filtro-status {
+        display: none !important;
+    }
+
     .page {
         margin: 0;
         border: none;
         box-shadow: none;
         width: 100%;
         min-height: 0;
-        padding: 20mm 15mm 20mm 15mm;
+        padding: 0;
         position: relative;
-        page-break-after: always;
+        page-break-after: auto;
+        background: white;
     }
-    
-    .page:last-child {
+
+    .lista-viagem-print {
+        display: block;
+        page-break-inside: avoid;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+
+    .lista-viagem-print h4 {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    .lista-viagem-print table {
+        page-break-inside: auto;
+        break-inside: auto;
+    }
+
+    .lista-viagem-print tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
         page-break-after: auto;
     }
 
-    .action-bar {
-        display: none !important;
+    .lista-viagem-print thead {
+        display: table-header-group;
     }
 
-    input, textarea, select {
-        border: 1px solid #ccc !important;
-        background: white !important;
-        -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important;
+    .lista-viagem-print tfoot {
+        display: table-footer-group;
     }
-    
-    .btn-acao {
-        display: none !important;
+
+    #abaViagem {
+        display: block !important;
     }
-    
-    .equipe-tab {
-        background: #e0e0e0 !important;
-        color: black !important;
-    }
-    
+
     .lista-alunos-wrapper {
         overflow: visible !important;
         max-height: none !important;
     }
-    
-    .aba-btn {
-        background: #e0e0e0 !important;
-        color: black !important;
-        border: 1px solid #ccc !important;
-    }
-    
-    .aba-btn.active {
-        background: #ccc !important;
-        color: black !important;
-    }
 }
 
-/* ================= TOAST ================= */
-.toast-message {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #27ae60;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
-    z-index: 2000;
-    animation: fadeInOut 2s ease;
-    font-size: 11px;
-    font-weight: bold;
+.print-only {
+    display: none;
 }
 
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-    15% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    85% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+@media print {
+    .print-only {
+        display: block;
+    }
+    
+    .no-print {
+        display: none;
+    }
 }
 
 .text-center { text-align: center; }
@@ -649,6 +715,15 @@ th {
 
         <!-- LISTA DE ALUNOS POR EQUIPE COM SCROLL -->
         <h3>📋 ALUNOS CADASTRADOS</h3>
+        
+        <!-- FILTRO DE STATUS -->
+        <div class="filtro-status">
+            <span style="font-weight: bold; font-size: 10px;">Filtrar por status:</span>
+            <label><input type="radio" name="filtroStatus" value="todos" checked> 📋 Todos</label>
+            <label><input type="radio" name="filtroStatus" value="ativos"> ✅ Ativos</label>
+            <label><input type="radio" name="filtroStatus" value="inativos"> ⏰ Com data de saída</label>
+        </div>
+        
         <div class="equipe-tabs" id="equipeTabs">
             <button class="equipe-tab active" data-equipe="Procobaja">Procobaja</button>
             <button class="equipe-tab" data-equipe="Erocket">ERocket</button>
@@ -658,7 +733,7 @@ th {
         <div class="lista-alunos-wrapper">
             <table class="alunos-table" id="tabelaAlunos">
                 <thead>
-                    <tr><th style="min-width: 120px;">Nome</th><th style="min-width: 80px;">RG</th><th style="min-width: 90px;">RA</th><th style="min-width: 150px;">Curso</th><th style="min-width: 85px;">Entrada</th><th style="min-width: 85px;">Saída</th><th style="min-width: 80px;">Ações</th></tr>
+                    <tr><th style="min-width: 120px;">Nome</th><th style="min-width: 70px;">RG</th><th style="min-width: 60px;">RA</th><th style="min-width: 150px;">Curso</th><th style="min-width: 60px;">Entrada</th><th style="min-width: 60px;">Saída</th><th style="min-width: 80px;">Ações</th></tr>
                 </thead>
                 <tbody id="tabelaAlunosBody">
                     <tr><td colspan="7" class="text-center">Nenhum aluno cadastrado</td></tr>
@@ -669,8 +744,7 @@ th {
 
     <!-- CONTEÚDO ABA 2: LISTA DE VIAGEM -->
     <div id="abaViagem" class="aba-conteudo">
-        <!-- SELEÇÃO DE ALUNOS POR EQUIPE -->
-        <div class="viagem-selecao">
+        <div class="no-print">
             <h3>✈️ SELECIONAR ALUNOS PARA VIAGEM</h3>
             <div class="equipe-tabs" id="viagemEquipeTabs">
                 <button class="equipe-tab active" data-equipe-v="Procobaja">Procobaja</button>
@@ -678,7 +752,6 @@ th {
                 <button class="equipe-tab" data-equipe-v="Abutre Aerodesign">Abutre Aerodesign</button>
             </div>
             
-            <!-- BOTÃO SELECIONAR TODOS ADICIONADO AQUI -->
             <div style="margin: 10px 0; display: flex; gap: 10px; align-items: center;">
                 <button class="btn-acao" id="btnSelecionarTodos" style="background: #27ae60;">✅ SELECIONAR TODOS</button>
                 <button class="btn-acao btn-outline" id="btnDesselecionarTodos" style="border-color: #c0392b; color: #c0392b;">❌ DESMARCAR TODOS</button>
@@ -696,17 +769,23 @@ th {
             </div>
         </div>
 
-        <!-- LISTA DE VIAGEM PARA IMPRESSÃO -->
-        <div class="lista-viagem-print" id="listaViagemPrint">
-            <h4>📄 LISTA DE VIAGEM - PARTICIPANTES</h4>
-            <div id="listaViagemContainer">
-                <p class="text-center">Nenhum aluno selecionado para viagem</p>
+        <div class="no-print">
+            <h3>✈️ LISTA DE PASSAGEIROS</h3>
+            <div style="margin-bottom: 10px;">
+                <button class="btn-acao btn-success" id="btnExportarCSV">📊 EXPORTAR CSV</button>
             </div>
-
+            <div class="lista-viagem-print" id="listaViagemPrint">
+                <h4>📄 LISTA DE VIAGEM - PARTICIPANTES</h4>
+                <div id="listaViagemContainer">
+                    <p class="text-center">Nenhum aluno selecionado para viagem</p>
+                </div>
+                <div class="print-footer" style="margin-top: 20px; padding-top: 8px; border-top: 1px solid #ccc; font-size: 8px; text-align: center;">
+                    Documento emitido pelo Sistema de Gestão de Equipes de Competição - Emitido em: <span id="dataEmissaoPrint"></span>
+                </div>
+            </div>
         </div>
 
-        <!-- INFORMAÇÕES ADICIONAIS -->
-        <div class="normas-container" style="margin-top: 20px;">
+        <div class="normas-container no-print" style="margin-top: 20px;">
             <h3>INFORMAÇÕES IMPORTANTES</h3>
             <ol style="padding-left: 20px; font-size: 9px;">
                 <li>Esta lista deve ser apresentada ao responsável pelo transporte antes do embarque.</li>
@@ -718,14 +797,14 @@ th {
         </div>
     </div>
 
-    <div class="footer-note">
+    <div class="footer-note no-print">
         <div class="footer-left">Sistema de Gestão de Equipes de Competição</div>
         <div class="footer-right">Emitido em: <span id="dataEmissao"></span></div>
     </div>
 </div>
 
-<!-- BOTÕES FLUTUANTES -->
 <div class="action-bar">
+    <button class="btn btn-raiz" id="btnCarregarRaiz">📁 CARREGAR LISTA RAIZ</button>
     <button class="btn btn-clear" id="btnClearCache">🗑️ LIMPAR CACHE</button>
     <button class="btn btn-json-import" id="btnImportJSON">📂 IMPORTAR JSON</button>
     <button class="btn btn-json-export" id="btnExportJSON">📤 EXPORTAR JSON</button>
@@ -733,7 +812,6 @@ th {
 </div>
 
 <script>
-// ================= BANCO DE DADOS =================
 let alunos = [];
 let nextId = 1;
 let listaViagemIds = [];
@@ -741,16 +819,34 @@ let editingAlunoId = null;
 let equipeAtual = "Procobaja";
 let equipeViagemAtual = "Procobaja";
 let dadosCarregados = false;
+let filtroStatusAtual = "todos";
 
-// ================= FUNÇÕES AUXILIARES =================
+function formatarDataBR(dataStr) {
+    if (!dataStr) return '—';
+    const partes = dataStr.split('-');
+    if (partes.length !== 3) return dataStr;
+    return `${partes[2]}/${partes[1]}/${partes[0]}`;
+}
+
+function isAlunoAtivo(aluno) {
+    return !aluno.dataSaida || aluno.dataSaida.trim() === '';
+}
+
 function showToast(msg, isError = false) {
     const toast = document.createElement('div');
     toast.className = 'toast-message';
-    if (isError) {
-        toast.style.background = '#e74c3c';
-    } else {
-        toast.style.background = '#27ae60';
-    }
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = isError ? '#e74c3c' : '#27ae60';
+    toast.style.color = 'white';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '5px';
+    toast.style.zIndex = '10000';
+    toast.style.fontSize = '12px';
+    toast.style.fontWeight = 'bold';
+    toast.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
     toast.innerText = msg;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 3000);
@@ -759,44 +855,9 @@ function showToast(msg, isError = false) {
 function saveToLocalStorage() {
     const data = { alunos, nextId, listaViagemIds };
     localStorage.setItem('equipes_competicao', JSON.stringify(data));
+    console.log('💾 Dados salvos no cache local');
 }
 
-// Função para carregar dados do arquivo JSON da raiz
-async function carregarArquivoJsonRaiz() {
-    try {
-        showToast('🔄 Carregando dados do arquivo alunos.json...');
-        const response = await fetch('alunos.json');
-        
-        if (response.ok) {
-            const data = await response.json();
-            
-            // Verificar se o JSON tem a estrutura esperada
-            if (data.alunos && Array.isArray(data.alunos)) {
-                alunos = data.alunos;
-                nextId = data.nextId || (alunos.length > 0 ? Math.max(...alunos.map(a => a.id), 0) + 1 : 1);
-                listaViagemIds = data.listaViagemIds || [];
-                
-                // Salvar no localStorage como backup
-                saveToLocalStorage();
-                dadosCarregados = true;
-                showToast('✅ Dados carregados com sucesso do arquivo alunos.json!');
-                return true;
-            } else {
-                showToast('⚠️ Arquivo JSON com formato inválido. Usando dados padrão.', true);
-                return false;
-            }
-        } else {
-            showToast('⚠️ Arquivo alunos.json não encontrado. Usando dados padrão.', true);
-            return false;
-        }
-    } catch (error) {
-        console.error('Erro ao carregar JSON:', error);
-        showToast('⚠️ Erro ao carregar alunos.json. Usando dados padrão.', true);
-        return false;
-    }
-}
-
-// Função para carregar dados do localStorage (fallback)
 function loadFromLocalStorage() {
     const saved = localStorage.getItem('equipes_competicao');
     if (saved && !dadosCarregados) {
@@ -811,43 +872,137 @@ function loadFromLocalStorage() {
     return false;
 }
 
-// Dados padrão (fallback)
+function carregarListaRaiz() {
+    if (confirm('⚠️ Isso irá SOBRESCREVER todos os dados atuais com a lista do arquivo alunos.json!\n\nDeseja continuar?')) {
+        showToast('🔄 Carregando lista raiz...');
+        
+        fetch('alunos.json?' + new Date().getTime())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Arquivo alunos.json não encontrado');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.alunos && Array.isArray(data.alunos)) {
+                    alunos = data.alunos;
+                    nextId = data.nextId || (alunos.length > 0 ? Math.max(...alunos.map(a => a.id), 0) + 1 : 1);
+                    listaViagemIds = data.listaViagemIds || [];
+                    
+                    saveToLocalStorage();
+                    renderizarTabelaAlunos();
+                    renderizarChecklistViagem();
+                    renderizarListaViagem();
+                    
+                    showToast(`✅ Lista raiz carregada! ${alunos.length} alunos importados.`);
+                } else {
+                    showToast('⚠️ Arquivo JSON com formato inválido.', true);
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao carregar lista raiz:', error);
+                showToast('❌ Erro ao carregar alunos.json. Verifique se o arquivo existe.', true);
+            });
+    }
+}
+
+// Função para exportar lista de viagem em CSV
+function exportarListaViagemCSV() {
+    const alunosViagem = listaViagemIds.map(id => alunos.find(a => a.id === id)).filter(a => a);
+    
+    if (alunosViagem.length === 0) {
+        showToast('❌ Nenhum aluno na lista de viagem para exportar!', true);
+        return;
+    }
+    
+    // Cabeçalho do CSV
+    const headers = ['Nome', 'RG', 'RA', 'Curso', 'Equipe', 'Data de Entrada', 'Data de Saída', 'Status'];
+    
+    // Dados das linhas
+    const rows = alunosViagem.map(aluno => [
+        aluno.nome,
+        aluno.rg || '',
+        aluno.ra,
+        aluno.curso,
+        aluno.equipe,
+        formatarDataBR(aluno.dataEntrada),
+        aluno.dataSaida ? formatarDataBR(aluno.dataSaida) : 'Ativo',
+        isAlunoAtivo(aluno) ? 'Ativo' : 'Inativo'
+    ]);
+    
+    // Montar o conteúdo CSV
+    let csvContent = headers.join(',') + '\n';
+    rows.forEach(row => {
+        // Escapar campos que podem ter vírgula ou aspas
+        const escapedRow = row.map(cell => {
+            if (typeof cell === 'string' && (cell.includes(',') || cell.includes('"') || cell.includes('\n'))) {
+                return `"${cell.replace(/"/g, '""')}"`;
+            }
+            return cell;
+        }).join(',');
+        csvContent += escapedRow + '\n';
+    });
+    
+    // Adicionar metadados no final do CSV
+    csvContent += '\n';
+    csvContent += `"Data de emissão","${new Date().toLocaleString('pt-BR')}"\n`;
+    csvContent += `"Total de passageiros","${alunosViagem.length}"\n`;
+    
+    // Criar e baixar o arquivo
+    const blob = new Blob(["\uFEFF" + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.href = url;
+    link.setAttribute('download', `lista_viagem_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    
+    showToast(`✅ CSV exportado com sucesso! ${alunosViagem.length} passageiros.`);
+}
+
 function carregarDadosPadrao() {
     alunos = [
-        { id: 1, nome: "Ana Beatriz Souza", rg: "12.345.678-9", ra: "RA2024001", curso: "Engenharia Mecânica", dataEntrada: "2024-02-15", dataSaida: "", equipe: "Procobaja" },
-        { id: 2, nome: "Rafael Oliveira Santos", rg: "23.456.789-0", ra: "RA2022789", curso: "Engenharia Aeroespacial", dataEntrada: "2022-09-05", dataSaida: "", equipe: "Erocket" },
-        { id: 3, nome: "Juliana Pereira Mendes", rg: "34.567.890-1", ra: "RA2022288", curso: "Engenharia Mecânica", dataEntrada: "2022-03-18", dataSaida: "", equipe: "Abutre Aerodesign" },
-        { id: 4, nome: "Carlos Eduardo Lima", rg: "45.678.901-2", ra: "RA2023102", curso: "Engenharia Elétrica", dataEntrada: "2023-08-10", dataSaida: "2025-01-20", equipe: "Procobaja" },
-        { id: 5, nome: "Fernanda Costa Almeida", rg: "56.789.012-3", ra: "RA2023304", curso: "Engenharia Mecânica", dataEntrada: "2023-07-12", dataSaida: "", equipe: "Erocket" },
-        { id: 6, nome: "Lucas Gabriel Nunes", rg: "67.890.123-4", ra: "RA2024502", curso: "Engenharia de Computação", dataEntrada: "2024-01-20", dataSaida: "", equipe: "Erocket" },
-        { id: 7, nome: "Mariana Fernandes Rocha", rg: "78.901.234-5", ra: "RA2024156", curso: "Engenharia de Produção", dataEntrada: "2024-03-01", dataSaida: "", equipe: "Procobaja" },
-        { id: 8, nome: "Thiago Henrique Martins", rg: "89.012.345-6", ra: "RA2023881", curso: "Engenharia Aeronáutica", dataEntrada: "2023-05-22", dataSaida: "2024-10-15", equipe: "Abutre Aerodesign" },
-        { id: 9, nome: "Isabela Cristina Rios", rg: "90.123.456-7", ra: "RA2024199", curso: "Engenharia Mecânica", dataEntrada: "2024-04-03", dataSaida: "", equipe: "Abutre Aerodesign" }
-    ];
+];
     nextId = 10;
     listaViagemIds = [1, 2, 5];
 }
 
-// ================= RENDERIZAÇÃO =================
 function renderizarTabelaAlunos() {
     const tbody = document.getElementById('tabelaAlunosBody');
-    const alunosEquipe = alunos.filter(a => a.equipe === equipeAtual).sort((a,b) => a.id - b.id);
+    let alunosEquipe = alunos.filter(a => a.equipe === equipeAtual);
+    
+    if (filtroStatusAtual === 'ativos') {
+        alunosEquipe = alunosEquipe.filter(a => isAlunoAtivo(a));
+    } else if (filtroStatusAtual === 'inativos') {
+        alunosEquipe = alunosEquipe.filter(a => !isAlunoAtivo(a));
+    }
+    
+    alunosEquipe.sort((a,b) => a.id - b.id);
     
     if (alunosEquipe.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-center">Nenhum aluno cadastrado nesta equipe</td></tr>';
+        let msg = 'Nenhum aluno cadastrado';
+        if (filtroStatusAtual === 'ativos') msg = 'Nenhum aluno ativo encontrado';
+        if (filtroStatusAtual === 'inativos') msg = 'Nenhum aluno com data de saída encontrado';
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center">${msg}</td></tr>`;
         return;
     }
     
     tbody.innerHTML = '';
     alunosEquipe.forEach(aluno => {
+        const isAtivo = isAlunoAtivo(aluno);
         const tr = document.createElement('tr');
+        if (!isAtivo) {
+            tr.className = 'aluno-inativo';
+        }
         tr.innerHTML = `
             <td>${escapeHtml(aluno.nome)}</td>
             <td>${escapeHtml(aluno.rg || '—')}</td>
             <td>${escapeHtml(aluno.ra)}</td>
             <td>${escapeHtml(aluno.curso)}</td>
-            <td>${aluno.dataEntrada || '—'}</td>
-            <td>${aluno.dataSaida || 'Ativo'}</td>
+            <td>${formatarDataBR(aluno.dataEntrada)}</td>
+            <td>${aluno.dataSaida ? formatarDataBR(aluno.dataSaida) : 'Ativo'}</td>
             <td>
                 <button class="btn-acao" onclick="editarAluno(${aluno.id})">✏️ Editar</button>
                 <button class="btn-acao btn-danger" onclick="excluirAluno(${aluno.id})">🗑️ Excluir</button>
@@ -879,16 +1034,13 @@ function renderizarChecklistViagem() {
     });
 }
 
-// ================= FUNÇÕES SELECIONAR/DESELECIONAR TODOS =================
 function selecionarTodosCheckboxes() {
     const checkboxes = document.querySelectorAll('#checklistViagem .viagem-checkbox');
     if (checkboxes.length === 0) {
         showToast('Nenhum aluno disponível para selecionar', true);
         return;
     }
-    checkboxes.forEach(cb => {
-        cb.checked = true;
-    });
+    checkboxes.forEach(cb => { cb.checked = true; });
     showToast(`✅ ${checkboxes.length} aluno(s) selecionado(s)!`);
 }
 
@@ -898,9 +1050,7 @@ function desselecionarTodosCheckboxes() {
         showToast('Nenhum aluno disponível para desmarcar', true);
         return;
     }
-    checkboxes.forEach(cb => {
-        cb.checked = false;
-    });
+    checkboxes.forEach(cb => { cb.checked = false; });
     showToast(`❌ Todos os ${checkboxes.length} aluno(s) foram desmarcados!`);
 }
 
@@ -910,29 +1060,28 @@ function renderizarListaViagem() {
     
     if (alunosViagem.length === 0) {
         container.innerHTML = '<p class="text-center">Nenhum aluno selecionado para viagem</p>';
+        document.getElementById('dataEmissaoPrint').innerText = new Date().toLocaleString('pt-BR');
         return;
     }
     
     let html = '<table class="alunos-table" style="width: 100%;"><thead><tr><th>Nome</th><th>RG</th><th>RA</th><th>Curso</th><th>Equipe</th></tr></thead><tbody>';
     alunosViagem.forEach(aluno => {
-        html += `
-            <tr>
-                <td>${escapeHtml(aluno.nome)}</td>
-                <td>${escapeHtml(aluno.rg || '—')}</td>
-                <td>${escapeHtml(aluno.ra)}</td>
-                <td>${escapeHtml(aluno.curso)}</td>
-                <td>${aluno.equipe}</td>
-            </tr>
-        `;
+        html += `<tr>
+            <td>${escapeHtml(aluno.nome)}</td>
+            <td>${escapeHtml(aluno.rg || '—')}</td>
+            <td>${escapeHtml(aluno.ra)}</td>
+            <td>${escapeHtml(aluno.curso)}</td>
+            <td>${aluno.equipe}</td>
+        </tr>`;
     });
     html += '</tbody></table>';
     container.innerHTML = html;
     
-    // Atualizar data de emissão
-    document.getElementById('dataEmissao').innerText = new Date().toLocaleString('pt-BR');
+    const dataAtual = new Date().toLocaleString('pt-BR');
+    document.getElementById('dataEmissao').innerText = dataAtual;
+    document.getElementById('dataEmissaoPrint').innerText = dataAtual;
 }
 
-// ================= CRUD =================
 function adicionarAluno() {
     const nome = document.getElementById('alunoNome').value.trim();
     const rg = document.getElementById('alunoRg').value.trim();
@@ -943,7 +1092,7 @@ function adicionarAluno() {
     const equipe = document.getElementById('selectEquipe').value;
     
     if (!nome || !ra || !curso) {
-        showToast('Preencha Nome, RA e Curso');
+        showToast('Preencha Nome, RA e Curso', true);
         return;
     }
     
@@ -1012,7 +1161,6 @@ function limparFormulario() {
     document.getElementById('editingInfo').innerHTML = '';
 }
 
-// ================= VIAGEM =================
 function adicionarSelecionadosViagem() {
     const checkboxes = document.querySelectorAll('#checklistViagem .viagem-checkbox');
     let added = 0;
@@ -1045,21 +1193,18 @@ function limparListaViagem() {
     }
 }
 
-function imprimirListaViagem() {
-    window.print();
-}
-
-// ================= JSON =================
 function exportarJSON() {
+    saveToLocalStorage();
+    
     const data = { alunos, nextId, listaViagemIds, exportadoEm: new Date().toISOString() };
     const jsonStr = JSON.stringify(data, null, 2);
     const blob = new Blob([jsonStr], { type: 'application/json' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `alunos.json`;
+    link.download = `alunos_export_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
     link.click();
     URL.revokeObjectURL(link.href);
-    showToast('JSON exportado como alunos.json!');
+    showToast('JSON exportado com sucesso!');
 }
 
 function importarJSON() {
@@ -1091,7 +1236,7 @@ function importarJSON() {
 }
 
 function limparCache() {
-    if (confirm('⚠️ Isso apagará TODOS os dados! Deseja continuar?')) {
+    if (confirm('⚠️ Isso apagará TODOS os dados do cache local! Deseja continuar?')) {
         localStorage.removeItem('equipes_competicao');
         carregarDadosPadrao();
         saveToLocalStorage();
@@ -1104,7 +1249,6 @@ function limparCache() {
     }
 }
 
-// ================= ESCAPE HTML =================
 function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>]/g, function(m) {
@@ -1115,50 +1259,33 @@ function escapeHtml(str) {
     });
 }
 
-// ================= INICIALIZAÇÃO PRINCIPAL =================
-async function inicializarSistema() {
-    // Tentar carregar do arquivo JSON da raiz primeiro
-    const carregado = await carregarArquivoJsonRaiz();
-    
-    if (!carregado) {
-        // Se não conseguiu carregar do JSON, tenta do localStorage
-        const localLoaded = loadFromLocalStorage();
-        
-        if (!localLoaded) {
-            // Se nada funcionar, usa dados padrão
-            carregarDadosPadrao();
-            showToast('📋 Usando dados de exemplo padrão', true);
-        } else {
-            showToast('📋 Dados carregados do cache local');
-        }
+function inicializarSistema() {
+    const localLoaded = loadFromLocalStorage();
+    if (!localLoaded) {
+        carregarDadosPadrao();
+        showToast('📋 Usando dados de exemplo padrão');
+        saveToLocalStorage();
+    } else {
+        showToast('📋 Dados carregados do cache local');
     }
-    
-    // Salvar no localStorage após carregar
-    saveToLocalStorage();
-    
-    // Renderizar tudo
     renderizarTabelaAlunos();
     renderizarChecklistViagem();
     renderizarListaViagem();
 }
 
-// ================= EVENTOS E INICIALIZAÇÃO =================
 function init() {
-    // Eventos dos botões
     document.getElementById('btnAdicionar').addEventListener('click', adicionarAluno);
     document.getElementById('btnLimparForm').addEventListener('click', limparFormulario);
     document.getElementById('btnAddSelecionados').addEventListener('click', adicionarSelecionadosViagem);
     document.getElementById('btnLimparListaViagem').addEventListener('click', limparListaViagem);
-    
-    // Eventos dos novos botões Selecionar/Desselecionar Todos
     document.getElementById('btnSelecionarTodos').addEventListener('click', selecionarTodosCheckboxes);
     document.getElementById('btnDesselecionarTodos').addEventListener('click', desselecionarTodosCheckboxes);
-
     document.getElementById('btnClearCache').addEventListener('click', limparCache);
     document.getElementById('btnExportJSON').addEventListener('click', exportarJSON);
     document.getElementById('btnImportJSON').addEventListener('click', importarJSON);
+    document.getElementById('btnCarregarRaiz').addEventListener('click', carregarListaRaiz);
+    document.getElementById('btnExportarCSV').addEventListener('click', exportarListaViagemCSV);
     
-    // Tabs da equipe na gestão
     document.querySelectorAll('#equipeTabs .equipe-tab').forEach(btn => {
         btn.addEventListener('click', () => {
             equipeAtual = btn.getAttribute('data-equipe');
@@ -1168,7 +1295,6 @@ function init() {
         });
     });
     
-    // Tabs da equipe na viagem
     document.querySelectorAll('#viagemEquipeTabs .equipe-tab').forEach(btn => {
         btn.addEventListener('click', () => {
             equipeViagemAtual = btn.getAttribute('data-equipe-v');
@@ -1178,7 +1304,6 @@ function init() {
         });
     });
     
-    // Abas principais
     document.querySelectorAll('.aba-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const aba = btn.getAttribute('data-aba');
@@ -1195,7 +1320,13 @@ function init() {
         });
     });
     
-    // Iniciar o sistema carregando do JSON
+    document.querySelectorAll('input[name="filtroStatus"]').forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            filtroStatusAtual = e.target.value;
+            renderizarTabelaAlunos();
+        });
+    });
+    
     inicializarSistema();
 }
 
