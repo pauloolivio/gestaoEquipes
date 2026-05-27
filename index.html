@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Gestão de Equipes de Competição - Procobaja | Erocket | Abutre Aerodesign</title>
 <style>
 /* ================= CONFIGURAÇÕES GERAIS ================= */
@@ -119,6 +119,7 @@ th {
     padding-bottom: 5px;
     margin-bottom: 5px;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
 .header-center {
@@ -151,6 +152,7 @@ th {
     border-bottom: 2px solid #1a3e6f;
     display: flex;
     gap: 5px;
+    flex-wrap: wrap;
 }
 
 .aba-btn {
@@ -217,6 +219,7 @@ th {
 
 .double-item {
     flex: 1;
+    min-width: 200px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -345,6 +348,7 @@ th {
     padding: 5px 10px;
     background: #f5f5f5;
     border-radius: 5px;
+    flex-wrap: wrap;
 }
 
 .filtro-status label {
@@ -413,6 +417,7 @@ th {
     gap: 10px;
     padding: 5px;
     border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
 }
 
 .viagem-checkbox-item input {
@@ -516,6 +521,63 @@ th {
     padding-top: 8px;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* ================= MODAL DE SENHA ================= */
+.modal-senha {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-senha-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.modal-senha-content h3 {
+    margin-bottom: 20px;
+    background: none;
+    border-left: none;
+}
+
+.modal-senha-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0;
+    font-size: 14px;
+}
+
+.modal-senha-content button {
+    padding: 10px 20px;
+    margin: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.modal-senha-content .btn-confirm {
+    background: #27ae60;
+    color: white;
+}
+
+.modal-senha-content .btn-cancel {
+    background: #e74c3c;
+    color: white;
 }
 
 /* ================= CONFIGURAÇÃO DE IMPRESSÃO ================= */
@@ -543,7 +605,8 @@ th {
     .double-row .btn-acao,
     .viagem-selecao .double-row,
     .normas-container,
-    .filtro-status {
+    .filtro-status,
+    .modal-senha {
         display: none !important;
     }
 
@@ -619,9 +682,106 @@ th {
 .mt-10 { margin-top: 10px; }
 .mb-10 { margin-bottom: 10px; }
 .bold { font-weight: bold; }
+
+/* ================= RESPONSIVIDADE ================= */
+@media screen and (max-width: 768px) {
+    .page {
+        width: 100%;
+        padding: 15px;
+        margin: 0 10px 20px 10px;
+    }
+    
+    .action-bar {
+        position: static;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+        gap: 8px;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+    
+    .double-item {
+        min-width: 100%;
+    }
+    
+    .header-3cols {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .header-right, .header-left {
+        text-align: center;
+        margin: 5px 0;
+    }
+    
+    .abas-container {
+        justify-content: center;
+    }
+    
+    .aba-btn {
+        padding: 6px 12px;
+        font-size: 10px;
+    }
+    
+    .alunos-table th, .alunos-table td {
+        font-size: 8px;
+        padding: 4px 2px;
+    }
+    
+    .lista-alunos-wrapper {
+        max-height: 350px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .page {
+        padding: 10px;
+    }
+    
+    .btn {
+        padding: 5px 10px;
+        font-size: 9px;
+    }
+    
+    .equipe-tab, .aba-btn {
+        padding: 4px 10px;
+        font-size: 9px;
+    }
+    
+    .double-item label {
+        min-width: 100px;
+        font-size: 9px;
+    }
+    
+    .filtro-status {
+        gap: 8px;
+    }
+    
+    .filtro-status label {
+        font-size: 9px;
+    }
+}
 </style>
 </head>
 <body>
+
+<!-- MODAL DE SENHA -->
+<div id="modalSenha" class="modal-senha">
+    <div class="modal-senha-content">
+        <h3>🔒 SENHA NECESSÁRIA</h3>
+        <p>Digite a senha para carregar a lista raiz:</p>
+        <input type="password" id="senhaRaiz" placeholder="Digite a senha">
+        <br>
+        <button class="btn-confirm" onclick="confirmarSenha()">✓ CONFIRMAR</button>
+        <button class="btn-cancel" onclick="fecharModalSenha()">✗ CANCELAR</button>
+    </div>
+</div>
 
 <!-- PÁGINA ÚNICA COM ABAS -->
 <div class="page" id="paginaPrincipal">
@@ -752,7 +912,7 @@ th {
                 <button class="equipe-tab" data-equipe-v="Abutre Aerodesign">Abutre Aerodesign</button>
             </div>
             
-            <div style="margin: 10px 0; display: flex; gap: 10px; align-items: center;">
+            <div style="margin: 10px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
                 <button class="btn-acao" id="btnSelecionarTodos" style="background: #27ae60;">✅ SELECIONAR TODOS</button>
                 <button class="btn-acao btn-outline" id="btnDesselecionarTodos" style="border-color: #c0392b; color: #c0392b;">❌ DESMARCAR TODOS</button>
                 <span style="font-size: 9px; color: #666;">Marque/desmarque todos os alunos da equipe atual</span>
@@ -773,9 +933,9 @@ th {
             <h3>✈️ LISTA DE PASSAGEIROS</h3>
 
             <div class="lista-viagem-print" id="listaViagemPrint">
-                            <div style="margin-bottom: 0px;">
-                <button class="btn-acao btn-success" id="btnExportarCSV">📊 EXPORTAR CSV</button>
-            </div>
+                <div style="margin-bottom: 0px;">
+                    <button class="btn-acao btn-success" id="btnExportarCSV">📊 EXPORTAR CSV</button>
+                </div>
                 <h4>📄 LISTA DE PASSAGEIROS - EXPORTAR CSV</h4>
                 <div id="listaViagemContainer">
                     <p class="text-center">Nenhum aluno selecionado para viagem</p>
@@ -821,6 +981,7 @@ let equipeAtual = "Procobaja";
 let equipeViagemAtual = "Procobaja";
 let dadosCarregados = false;
 let filtroStatusAtual = "todos";
+let senhaCorreta = "admin123dameccp"; 
 
 function formatarDataBR(dataStr) {
     if (!dataStr) return '—';
@@ -873,38 +1034,58 @@ function loadFromLocalStorage() {
     return false;
 }
 
-function carregarListaRaiz() {
-    if (confirm('⚠️ Isso irá SOBRESCREVER todos os dados atuais com a lista do arquivo alunos.json!\n\nDeseja continuar?')) {
-        showToast('🔄 Carregando lista raiz...');
-        
-        fetch('alunos.json?' + new Date().getTime())
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Arquivo alunos.json não encontrado');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.alunos && Array.isArray(data.alunos)) {
-                    alunos = data.alunos;
-                    nextId = data.nextId || (alunos.length > 0 ? Math.max(...alunos.map(a => a.id), 0) + 1 : 1);
-                    listaViagemIds = data.listaViagemIds || [];
-                    
-                    saveToLocalStorage();
-                    renderizarTabelaAlunos();
-                    renderizarChecklistViagem();
-                    renderizarListaViagem();
-                    
-                    showToast(`✅ Lista raiz carregada! ${alunos.length} alunos importados.`);
-                } else {
-                    showToast('⚠️ Arquivo JSON com formato inválido.', true);
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao carregar lista raiz:', error);
-                showToast('❌ Erro ao carregar alunos.json. Verifique se o arquivo existe.', true);
-            });
+function abrirModalSenha() {
+    const modal = document.getElementById('modalSenha');
+    modal.style.display = 'flex';
+    document.getElementById('senhaRaiz').value = '';
+}
+
+function fecharModalSenha() {
+    const modal = document.getElementById('modalSenha');
+    modal.style.display = 'none';
+}
+
+function confirmarSenha() {
+    const senha = document.getElementById('senhaRaiz').value;
+    if (senha === senhaCorreta) {
+        fecharModalSenha();
+        carregarListaRaiz();
+    } else {
+        showToast('❌ Senha incorreta! Acesso negado.', true);
+        document.getElementById('senhaRaiz').value = '';
     }
+}
+
+function carregarListaRaiz() {
+    showToast('🔄 Carregando lista raiz...');
+    
+    fetch('alunos.json?' + new Date().getTime())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Arquivo alunos.json não encontrado');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.alunos && Array.isArray(data.alunos)) {
+                alunos = data.alunos;
+                nextId = data.nextId || (alunos.length > 0 ? Math.max(...alunos.map(a => a.id), 0) + 1 : 1);
+                listaViagemIds = data.listaViagemIds || [];
+                
+                saveToLocalStorage();
+                renderizarTabelaAlunos();
+                renderizarChecklistViagem();
+                renderizarListaViagem();
+                
+                showToast(`✅ Lista raiz carregada! ${alunos.length} alunos importados.`);
+            } else {
+                showToast('⚠️ Arquivo JSON com formato inválido.', true);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao carregar lista raiz:', error);
+            showToast('❌ Erro ao carregar alunos.json. Verifique se o arquivo existe.', true);
+        });
 }
 
 // Função para exportar lista de viagem em CSV
@@ -1284,7 +1465,7 @@ function init() {
     document.getElementById('btnClearCache').addEventListener('click', limparCache);
     document.getElementById('btnExportJSON').addEventListener('click', exportarJSON);
     document.getElementById('btnImportJSON').addEventListener('click', importarJSON);
-    document.getElementById('btnCarregarRaiz').addEventListener('click', carregarListaRaiz);
+    document.getElementById('btnCarregarRaiz').addEventListener('click', abrirModalSenha);
     document.getElementById('btnExportarCSV').addEventListener('click', exportarListaViagemCSV);
     
     document.querySelectorAll('#equipeTabs .equipe-tab').forEach(btn => {
